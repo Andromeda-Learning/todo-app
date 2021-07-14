@@ -1,35 +1,31 @@
 <template>
   <div>
-    <v-card
+    <todo-list-item
       v-for="(todo, k) in data"
       :key="k"
-      elevation="2"
-      :class="[
-        'mt-4',
-        'd-flex',
-        'align-items-center',
-        'align-center',
-        'justify-space-between',
-      ]"
-    >
-      <v-card-title
-        contenteditable
-        v-text="todo.name"
-      />
-      <v-btn
-        elevation="2"
-        color="error"
-        class="mr-4"
-      >
-        Delete
-      </v-btn>
-    </v-card>
+      :todo="todo"
+      :trigger-update="triggerUpdate"
+      :trigger-delete="triggerDelete"
+      :handle-deleted="handleDeleted"
+      :handle-edited="handleEdited"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import TodoListItem from '~/components/TodoListItem.vue'
+
 export default Vue.extend({
-  props: ['data']
+  components: {
+    TodoListItem
+  },
+  props: [
+    'data',
+    'triggerUpdate',
+    'triggerDelete',
+    'handleDeleted',
+    'handleEdited'
+  ],
 })
 </script>
