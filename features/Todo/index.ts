@@ -1,8 +1,9 @@
-type TodoItem = {
+export type TodoItem = {
   id: string,
   name: string,
 }
 
+export type TodoList = Array<TodoItem>
 interface ITodoResponse<T> {
   success: boolean,
   data: T,
@@ -10,7 +11,7 @@ interface ITodoResponse<T> {
 
 interface ITodoClient {
   create (name: TodoItem['name']): ITodoResponse<TodoItem>,
-  read: () => ITodoResponse<Array<TodoItem>>,
+  read: () => ITodoResponse<TodoList>,
   readById: (id: TodoItem['id']) => ITodoResponse<TodoItem>,
   update: (id: TodoItem['id'], name: TodoItem['name']) => ITodoResponse<TodoItem>,
   delete: (id: TodoItem['id']) => ITodoResponse<TodoItem>,
@@ -28,7 +29,7 @@ function todoResponse<T> (success: boolean, data: ITodoResponse<T>['data']) {
 }
 
 class TodoClient implements ITodoClient {
-  private list: Array<TodoItem> = []
+  private list: TodoList = []
   emptyTodoItem: TodoItem = { id: '', name: '' }
 
   create (name: TodoItem['name']) {
