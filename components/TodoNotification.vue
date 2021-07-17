@@ -21,7 +21,16 @@
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
-  props: ['text', 'isVisible'],
+  props: {
+    text: {
+      type: String,
+      required: true
+    },
+    isVisible: {
+      type: Boolean,
+      required: true
+    }
+  },
   data () {
     return {
       snackbar: this.isVisible

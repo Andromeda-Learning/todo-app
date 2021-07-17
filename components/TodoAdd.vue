@@ -11,7 +11,16 @@
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
-  props: ['triggerCreate', 'handleCreated'],
+  props: {
+    triggerCreate: {
+      type: Function,
+      required: true
+    },
+    handleCreated: {
+      type: Function,
+      required: true
+    }
+  },
   data: () => ({
     todo: ''
   }),

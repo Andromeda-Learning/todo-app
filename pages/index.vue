@@ -20,13 +20,13 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Todo from '~/features/Todo'
+import Todo, { TodoList as TodoListType } from '~/features/Todo'
 import TodoAdd from '~/components/TodoAdd.vue'
 import TodoList from '~/components/TodoList.vue'
 import TodoNotification from '~/components/TodoNotification.vue'
 
 const todo = new Todo()
-window.todo = todo
+// window.todo = todo
 
 export default Vue.extend({
   components: {
@@ -35,7 +35,7 @@ export default Vue.extend({
     TodoNotification
   },
   data: () => ({
-    todoList: [],
+    todoList: [] as TodoListType,
     snackbar: {
       text: '',
       isVisible: false

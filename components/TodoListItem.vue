@@ -29,24 +29,43 @@
 
 <script lang="ts">
 import Vue from 'vue'
+
 export default Vue.extend({
-  props: [
-    'todo',
-    'triggerUpdate',
-    'triggerDelete',
-    'handleDeleted',
-    'handleEdited'
-  ],
+  props: {
+    todo: {
+      type: Object,
+      required: true
+    },
+    triggerUpdate: {
+      type: Function,
+      required: true
+    },
+    triggerDelete: {
+      type: Function,
+      required: true
+    },
+    handleDeleted: {
+      type: Function,
+      required: true
+    },
+    handleEdited: {
+      type: Function,
+      required: true
+    }
+  },
   methods: {
-    handleDelete (id) {
+    handleDelete (id: string) {
       const response = this.triggerDelete(id)
       if (!response.success) {
         return
       }
       this.handleDeleted()
     },
-    handleBlur (id) {
-      const newVal = this.$refs.todoName.innerText
+    handleBlur (id: string) {
+      if (!this.$refs.todoName) {
+        throw new Error('todoName should not be defined')
+      }
+      const newVal: string = (this.$refs.todoName as HTMLInputElement).innerText
       const response = this.triggerUpdate(id, newVal)
       if (!response.success) {
         return
@@ -54,7 +73,7 @@ export default Vue.extend({
       this.handleEdited()
     },
     handleEnter () {
-      this.$refs.todoName.blur()
+      (this.$refs.todoName as HTMLInputElement).blur()
     }
   }
 })

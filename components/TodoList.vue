@@ -20,12 +20,27 @@ export default Vue.extend({
   components: {
     TodoListItem
   },
-  props: [
-    'data',
-    'triggerUpdate',
-    'triggerDelete',
-    'handleDeleted',
-    'handleEdited'
-  ],
+  props: {
+    data: {
+      type: Array,
+      required: true
+    },
+    triggerUpdate: {
+      type: Function,
+      required: true
+    },
+    triggerDelete: {
+      type: Function,
+      required: true
+    },
+    handleDeleted: {
+      type: Function,
+      required: true
+    },
+    handleEdited: {
+      type: Function,
+      required: true
+    }
+  }
 })
 </script>
