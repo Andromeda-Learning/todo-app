@@ -25,7 +25,19 @@ import TodoAdd from '~/components/TodoAdd.vue'
 import TodoList from '~/components/TodoList.vue'
 import TodoNotification from '~/components/TodoNotification.vue'
 
-const todo = new Todo()
+const todo = new Todo({
+  onPersistentDataInitError () {
+    setTimeout(() => {
+      window.postMessage({
+        name: 'todo-persistent-data-init-error',
+        type: 'error',
+        payload: {
+          text: 'Failed to load persistent data. Don\'t worry we will fix that'
+        }
+      }, window.origin)
+    }, 0)
+  }
+})
 // window.todo = todo
 
 export default Vue.extend({
@@ -47,6 +59,25 @@ export default Vue.extend({
       return
     }
     this.todoList = response.data
+  },
+  mounted () {
+    const listener = (event: any) => {
+      if (event.origin !== window.origin) {
+        return
+      }
+      if (event.data.name !== 'todo-persistent-data-init-error') {
+        return
+      }
+      this.snackbar = {
+        text: event.data.payload.text,
+        isVisible: true
+      }
+    }
+    const event = 'message'
+    window.addEventListener(event, listener)
+    this.$once('hook:destroyed', () => {
+      window.removeEventListener(event, listener)
+    })
   },
   methods: {
     addTodo: todo.create.bind(todo),
