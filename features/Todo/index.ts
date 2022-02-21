@@ -34,7 +34,7 @@ interface ITodoCallbacks {
 
 class TodoClient implements ITodoClient {
   private list: TodoList = []
-  private persistKey = `todoList-${new Date().getTime()}`
+  private persistKey = 'todoList'
   emptyTodoItem: TodoItem = { id: '', name: '' }
 
   constructor (callbacks: ITodoCallbacks = {}) {
