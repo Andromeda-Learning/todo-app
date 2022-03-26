@@ -4,6 +4,7 @@
       v-model="todo"
       label="Type todo"
       hide-details="auto"
+      autofocus
     />
   </v-form>
 </template>
