@@ -38,17 +38,19 @@ class TodoClient implements ITodoClient {
   emptyTodoItem: TodoItem = { id: '', name: '' }
 
   constructor (callbacks: ITodoCallbacks = {}) {
-    const persistedList = localStorage.getItem(this.persistKey)
-    if (persistedList) {
-      if (this.isListValid(JSON.parse(persistedList))) {
-        this.list = JSON.parse(persistedList)
-        return
-      }
-      if (callbacks.onPersistentDataInitError) {
-        callbacks.onPersistentDataInitError()
-      }
-      localStorage.setItem(this.persistKey, JSON.stringify([]))
+    const persistedListUnnormalized = localStorage.getItem(this.persistKey)
+    if (!persistedListUnnormalized) {
+      return
     }
+    const persistedList = this.parsePersistentList(persistedListUnnormalized)
+    if (persistedList && this.isListValid(persistedList)) {
+      this.list = persistedList
+      return
+    }
+    if (callbacks.onPersistentDataInitError) {
+      callbacks.onPersistentDataInitError()
+    }
+    localStorage.setItem(this.persistKey, JSON.stringify([]))
   }
 
   create (name: TodoItem['name']) {
@@ -103,6 +105,14 @@ class TodoClient implements ITodoClient {
 
   private isListValid (list: TodoList) {
     return Array.isArray(list)
+  }
+
+  private parsePersistentList (list: string) {
+    try {
+      return JSON.parse(list)
+    } catch (error) {
+      return false
+    }
   }
 }
 
